@@ -7,7 +7,9 @@ A comprehensive Python-based toolkit for pricing financial derivatives using var
 - **Analytic Engine**: Closed-form Black-Scholes-Merton pricing for European options.
 - **Monte Carlo Engine**: Path-dependent option pricing (e.g., Asian options) with Geometric Brownian Motion simulations.
 - **LSM Engine**: Least Squares Monte Carlo for American options, handling early exercise optimally.
-- **Instrument Classes**: Support for European, Asian, and American call/put options.
+- **FRA Pricing Engine**: Forward Rate Agreement pricing using yield curve models.
+- **Yield Curve Management**: Linear interpolation of zero rates with flexible daycount conventions.
+- **Instrument Classes**: Support for European, Asian, American call/put options, and Forward Rate Agreements.
 - **Greeks Calculation**: Finite difference method for Delta calculation.
 - **Modular Design**: Easily extensible for new instruments and engines.
 
@@ -94,6 +96,35 @@ delta = calculate_delta(mc_engine, option, T=1.0)
 print(f"Delta: {delta:.4f}")
 ```
 
+### Pricing Forward Rate Agreements (FRA)
+Price FRAs using a yield curve:
+
+```python
+from market import YieldCurve
+from instruments import FRA
+from engines import FRAengine
+
+# Create a yield curve with maturities (in days) and zero rates
+yield_curve = YieldCurve(
+    maturities=[60, 180],
+    rates=[0.03, 0.08],
+    isShortTerm=True  # Using 360-day convention
+)
+
+# Define FRA: 2x8 FRA (60 to 180 days, strike 5%)
+fra = FRA(
+    t1=60,                    # Settlement date (in days)
+    t2=180,                   # Maturity date (in days)
+    strike=0.05,              # FRA strike rate (5%)
+    notionalAmount=1_000_000, # Notional principal
+    isPayer=True              # Payer: receives fixed, pays floating
+)
+
+# Price the FRA
+fra_price = FRAengine.priceFra(yield_curve, fra)
+print(f"FRA Price: ${fra_price:.2f}")
+```
+
 ## Project Structure
 
 ```
@@ -117,6 +148,8 @@ derivatives-pricing-engine/
 - **Monte Carlo**: Simulates asset paths and averages discounted payoffs.
 - **LSM (Longstaff-Schwartz)**: Backward induction with polynomial regression to estimate continuation values for American options.
 - **Geometric Brownian Motion**: Used for path generation in stochastic simulations.
+- **Yield Curve Interpolation**: Linear interpolation with support for both continuous (annual) and simple (360-day) compounding conventions.
+- **FRA Valuation**: Compares strike rate with market-implied forward rate, then discounts to present value using the yield curve.
 
 ## Contributing
 
@@ -136,6 +169,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Based on quantitative finance concepts from Hull's "Options, Futures, and Other Derivatives".
 - LSM method from Longstaff & Schwartz (2001).
+- FRA pricing methodology based on standard fixed income market conventions.
 
 ## Contact
 
