@@ -62,3 +62,13 @@ class AmericanOption(Instrument):
             return np.maximum(prices-self.strike, 0)
         else:
             return np.maximum(self.strike-prices, 0)
+        
+class FRA:
+    def  __init__(self, t1: float, t2: float, notionalAmount: float, strike: float, isPayer: bool):
+        self.t1 = t1
+        self.t2 = t2
+        self.notionalAmount = notionalAmount
+        self.strike = strike
+        self.isPayer = isPayer
+
+    

@@ -1,8 +1,8 @@
 # engines.py
 import numpy as np
 from scipy.stats import norm
-from market import MarketEnvironment
-from instruments import Instrument, EuropeanOption
+from market import MarketEnvironment, YieldCurve
+from instruments import Instrument, EuropeanOption, FRA
 
 class AnalyticEngine:
     """
@@ -102,3 +102,32 @@ class LSMEngine(MonteCarloEngine):
                 cashflows = cashflows*discount_factor
         
         return np.mean(cashflows*(discount_factor))
+    
+class FRAengine:
+    """
+    Pricing engine for Forward Rate Agreements (FRAs).
+    
+    Uses a yield curve to compute forward rates and price FRA contracts
+    based on the difference between strike rate and market forward rate.
+    """
+    @staticmethod
+    def priceFra(yieldCurve: YieldCurve, fra: FRA):
+        """
+        Calculate the present value of a Forward Rate Agreement.
+        
+        Computes the FRA value by comparing the strike rate with the implied
+        forward rate from the yield curve, then discounts to present value.
+        
+        Returns:
+            float: Present value of the FRA (positive for payer profit, negative for loss)
+        """
+        forwardRate = yieldCurve.forward_rate(fra.t1, fra.t2, fra.isPayer)
+        timeDifference = fra.t2 - fra.t1
+        
+        fraAmount = (fra.notionalAmount * ((fra.strike - forwardRate) * timeDifference/360)) * (yieldCurve.discount_factor(fra.t2, True))
+
+        if fra.isPayer:
+            return fraAmount * (-1)
+        else:
+            return fraAmount
+        
