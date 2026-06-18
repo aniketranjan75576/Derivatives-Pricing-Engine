@@ -1,6 +1,6 @@
 # Derivatives Pricing Engine
 
-A comprehensive Python-based toolkit for pricing financial derivatives using various numerical methods. This project implements closed-form solutions (Black-Scholes-Merton), Monte Carlo simulations, and the Least Squares Monte Carlo (LSM) method for American options.
+A comprehensive Python-based toolkit for pricing financial derivatives using various numerical methods. This project implements closed-form solutions (Black-Scholes-Merton), Monte Carlo simulations, the Least Squares Monte Carlo (LSM) method for American options and Linear Interpolation to price FRAs.
 
 ## Features
 
@@ -161,13 +161,9 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 4. Push to branch (`git push origin feature/new-engine`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
-- Based on quantitative finance concepts from Hull's "Options, Futures, and Other Derivatives".
+- Based on BSM concepts for European options".
 - LSM method from Longstaff & Schwartz (2001).
 - FRA pricing methodology based on standard fixed income market conventions.
 
