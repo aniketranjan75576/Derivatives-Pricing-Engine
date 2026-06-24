@@ -169,4 +169,4 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## Contact
 
-For questions or issues, open a GitHub issue or contact aniketranjan75576@example.com.
+For questions or issues, open a GitHub issue or contact aniketranjan75576@gmail.com.
